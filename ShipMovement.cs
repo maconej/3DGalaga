@@ -10,11 +10,16 @@ public class ShipMovement : MonoBehaviour
 
     public float rotateSpeed = 80f;
     private Vector2 lookInput, screenCenter, mouseDistance;
+
+    private float rollInput;
+    public float rollSpeed = 90f, rollAccel = 3.5f;
     // Start is called before the first frame update
     void Start()
     {
         screenCenter.x = Screen.width * 0.5f;
         screenCenter.y = Screen.height * 0.5f;
+
+        Cursor.lockState = CursorLockMode.Confined;
     }
 
     // Update is called once per frame
@@ -26,7 +31,11 @@ public class ShipMovement : MonoBehaviour
         mouseDistance.x = (lookInput.x - screenCenter.x) / screenCenter.x;
         mouseDistance.y = (lookInput.y - screenCenter.y) / screenCenter.y;
 
-        transform.Rotate(-mouseDistance.y * rotateSpeed * Time.deltaTime, mouseDistance.x * rotateSpeed * Time.deltaTime, 0f, Space.Self);
+        mouseDistance = Vector2.ClampMagnitude(mouseDistance, 1f);
+
+        rollInput = Mathf.Lerp(rollInput, Input.GetAxisRaw("BarrelRoll"), rollAccel * Time.deltaTime);
+
+        transform.Rotate(-mouseDistance.y * rotateSpeed * Time.deltaTime, mouseDistance.x * rotateSpeed * Time.deltaTime, rollInput * rollInput * Time.deltaTime, Space.Self);
 
         activeForwardSpeed = Mathf.Lerp(activeForwardSpeed, Input.GetAxisRaw("Vertical") * forwardSpeed, forwardAccel * Time.deltaTime);
         activeLatSpeed = Mathf.Lerp(activeLatSpeed, Input.GetAxisRaw("Horizontal") * latSpeed, latAccel * Time.deltaTime);
