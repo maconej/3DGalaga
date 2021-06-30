@@ -35,7 +35,7 @@ public class ShipMovement : MonoBehaviour
 
         rollInput = Mathf.Lerp(rollInput, Input.GetAxisRaw("BarrelRoll"), rollAccel * Time.deltaTime);
 
-        transform.Rotate(-mouseDistance.y * rotateSpeed * Time.deltaTime, mouseDistance.x * rotateSpeed * Time.deltaTime, rollInput * rollInput * Time.deltaTime, Space.Self);
+        transform.Rotate(-mouseDistance.y * rotateSpeed * Time.deltaTime, mouseDistance.x * rotateSpeed * Time.deltaTime, rollInput * rollSpeed * Time.deltaTime, Space.Self);
 
         activeForwardSpeed = Mathf.Lerp(activeForwardSpeed, Input.GetAxisRaw("Vertical") * forwardSpeed, forwardAccel * Time.deltaTime);
         activeLatSpeed = Mathf.Lerp(activeLatSpeed, Input.GetAxisRaw("Horizontal") * latSpeed, latAccel * Time.deltaTime);
